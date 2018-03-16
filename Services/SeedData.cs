@@ -21,37 +21,41 @@ public static class SeedData
             context.Products.AddRange(
                  new Product
                  {
-                     ProductName = "Ghostbusters 2",
+                     ProductName = "Window Air 2",
                      ProductId = Guid.NewGuid(),
                      ProductMediaFile = "https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png",
-                     ProductManufacturer = "Samsung",
-                     ShopperReview = new Random().Next(1, 5)
+                     ProductManufacturer = "LG",
+                     ShopperReview = new Random().Next(1, 5),
+                     Price = (decimal) (new Random().NextDouble())* 100000m
                  },
                   new Product
                   {
-                      ProductName = "Ghostbusters 2",
+                      ProductName = "Samsung Galaxy s9",
                       ProductId = Guid.NewGuid(),
                       ProductMediaFile = "https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png",
                       ProductManufacturer = "Samsung",
-                      ShopperReview = new Random().Next(1, 5)
+                      ShopperReview = new Random().Next(1, 5),
+                      Price = (decimal)(new Random().NextDouble()) * 100000m
                   },
 
                  new Product
                  {
-                     ProductName = "Ghostbusters 2",
+                     ProductName = "Dvd Home Theater System",
                      ProductId = Guid.NewGuid(),
                      ProductMediaFile = "https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png",
                      ProductManufacturer = "Samsung",
-                     ShopperReview = new Random().Next(1, 5)
+                     ShopperReview = new Random().Next(1, 5),
+                     Price = (decimal)(new Random().NextDouble()) * 100000m
                  },
 
                 new Product
                 {
-                    ProductName = "Ghostbusters 2",
+                    ProductName = "Dell Insprion 12645",
                     ProductId = Guid.NewGuid(),
                     ProductMediaFile = "https://ionicframework.com/dist/preview-app/www/assets/img/nin-live.png",
-                    ProductManufacturer = "Sony",
-                    ShopperReview = new Random().Next(1,5)
+                    ProductManufacturer = "Dell",
+                    ShopperReview = new Random().Next(1,5),
+                    Price = (decimal)(new Random().NextDouble()) * 100000m
                 }
             );
             context.SaveChanges();

@@ -23,8 +23,7 @@ namespace ShoppingCartApi.Controllers
         }
 
         [Route("all")]
-        [HttpGet]
-        [Produces(typeof(Product))]
+        [HttpGet]        
         public IActionResult GetAllProduct() {
             var products = this._productsManager.GetAll();
             return new OkObjectResult(products);
