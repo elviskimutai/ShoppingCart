@@ -39,11 +39,15 @@ namespace ShoppingCartApi.Controllers
         }
         [HttpPost]
         public IActionResult CreateProduct([FromBody]Product product) {
-            var result = this._productsManager.Add(product);
-            if (result) {
-                return new OkResult();
-            }
-            return BadRequest();
+            try
+            {
+                var result = this._productsManager.Add(product);
+               
+                    return new OkResult();
+                
+            } catch (Exception e) {
+                return  StatusCode(500,e.InnerException);
+                    }
         }
         [HttpDelete]
         [Route("{id}")]

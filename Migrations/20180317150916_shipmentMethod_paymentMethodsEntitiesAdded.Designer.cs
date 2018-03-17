@@ -11,9 +11,10 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    partial class ShoppingCartDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180317150916_shipmentMethod_paymentMethodsEntitiesAdded")]
+    partial class shipmentMethod_paymentMethodsEntitiesAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -10,7 +10,9 @@ namespace ShoppingCartApi.Models
     {
         public ShoppingCartDbContext(DbContextOptions<ShoppingCartDbContext> options)
          : base(options)
-        { }
+        {
+            Database.Migrate();
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -21,6 +23,8 @@ namespace ShoppingCartApi.Models
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Shopper> Shoppers { get; set; }
         public DbSet<ManufacturerCategory> ManufacturerCategories { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<ShipmentMethod> ShipmentMethods { get; set; }
 
     }
 }

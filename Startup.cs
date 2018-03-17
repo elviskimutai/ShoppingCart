@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShoppingCartApi.Models;
 
+using Swashbuckle.AspNetCore.Swagger;
+
 namespace ShoppingCartApi
 {
     public class Startup
@@ -28,6 +30,11 @@ namespace ShoppingCartApi
            services.AddDbContext<ShoppingCartDbContext>(options =>
            options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString")));
             services.AddMvc();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Shopping Cart Api", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +47,11 @@ namespace ShoppingCartApi
             }
             app.UseCors(builder=> {
                 builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build();
+            });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             app.UseMvc();
         }

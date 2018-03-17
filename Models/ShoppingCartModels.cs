@@ -11,4 +11,9 @@ namespace ShoppingCartApi.Models
     public class ShoppingCartModels
     {
     }
+
+    public class CustomerOrder {
+
+
+    }
 }

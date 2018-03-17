@@ -75,4 +75,22 @@ namespace ShoppingCartApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid CategoryId { get; set; }
     }
+
+    public class ShipmentMethod {
+        [Required]
+        public string Name { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ShipmentMethodId { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class PaymentMethod {
+        [Required]
+        public string Name { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid PaymentMethodId { get; set; }
+        public string Description { get; set; }
+    }
 }
