@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Description;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Models;
+using ShoppingCartApi.Services;
 
 namespace ShoppingCartApi.Controllers
 {
@@ -12,11 +14,19 @@ namespace ShoppingCartApi.Controllers
     [Route("api/ShipmentMethod")]
     public class ShipmentMethodsController : Controller
     {
+        private readonly ShoppingCartDbContext _dbContext;
+        private ShipmentMethodManager _shipmentMethodManager;
+        public ShipmentMethodsController(ShoppingCartDbContext _dbContext)
+        {
+            this._shipmentMethodManager = new ShipmentMethodManager(_dbContext);
+        }
         // GET: api/ShipmentMethod
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ResponseType(typeof(ShipmentMethod))]
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+          var shipmentMethods=  this._shipmentMethodManager.GetAll();
+          return new OkObjectResult(shipmentMethods);
         }
 
         // GET: api/ShipmentMethod/5
@@ -28,9 +38,9 @@ namespace ShoppingCartApi.Controllers
         
         // POST: api/ShipmentMethod
         [HttpPost]
-        public IActionResult Post([FromBody]ShipmentMethod value)
+        public IActionResult Post([FromBody]ShipmentMethod shipmentMethod)
         {
-            return null;
+            this._shipmentMethodManager.Add(shipmentMethod);
         }
         
         // PUT: api/ShipmentMethod/5
