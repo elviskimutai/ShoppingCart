@@ -11,14 +11,40 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180317150916_shipmentMethod_paymentMethodsEntitiesAdded")]
-    partial class shipmentMethod_paymentMethodsEntitiesAdded
+    [Migration("20180317210228_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
+
+            modelBuilder.Entity("ShoppingCartApi.Models.BillingInfo", b =>
+                {
+                    b.Property<Guid>("BillingInfoId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("CompanyName");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<Guid>("OrderId");
+
+                    b.Property<string>("PostalCode");
+
+                    b.HasKey("BillingInfoId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("BillingInfos");
+                });
 
             modelBuilder.Entity("ShoppingCartApi.Models.Manufacturer", b =>
                 {
@@ -58,23 +84,54 @@ namespace ShoppingCartApi.Migrations
                     b.Property<Guid>("OrderId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("CustomerId");
+
                     b.Property<string>("Email");
 
                     b.Property<bool>("NotifyShopper");
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<string>("OrderNo");
+                    b.Property<string>("OrderNo")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("PaymentMethod");
+                    b.Property<Guid>("PaymentMethodId");
 
-                    b.Property<string>("Shipment");
+                    b.Property<Guid>("ShipmentMethodId");
 
                     b.Property<string>("Status");
 
                     b.HasKey("OrderId");
 
+                    b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("ShipmentMethodId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ShoppingCartApi.Models.OrderItem", b =>
+                {
+                    b.Property<Guid>("OrderItemId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("OrderId");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<Guid>("ProductId");
+
+                    b.Property<int>("Qty");
+
+                    b.Property<decimal>("Total");
+
+                    b.HasKey("OrderItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ShoppingCartApi.Models.PaymentMethod", b =>
@@ -168,6 +225,40 @@ namespace ShoppingCartApi.Migrations
                     b.HasKey("ShopperId");
 
                     b.ToTable("Shoppers");
+                });
+
+            modelBuilder.Entity("ShoppingCartApi.Models.BillingInfo", b =>
+                {
+                    b.HasOne("ShoppingCartApi.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShoppingCartApi.Models.Order", b =>
+                {
+                    b.HasOne("ShoppingCartApi.Models.PaymentMethod", "PaymentMethod")
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShoppingCartApi.Models.ShipmentMethod", "ShipmentMethod")
+                        .WithMany()
+                        .HasForeignKey("ShipmentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ShoppingCartApi.Models.OrderItem", b =>
+                {
+                    b.HasOne("ShoppingCartApi.Models.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ShoppingCartApi.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

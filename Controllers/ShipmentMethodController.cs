@@ -40,7 +40,17 @@ namespace ShoppingCartApi.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]ShipmentMethod shipmentMethod)
         {
-            this._shipmentMethodManager.Add(shipmentMethod);
+            if (ModelState.IsValid)
+            {
+                var result = this._shipmentMethodManager.Add(shipmentMethod);
+                if (result)
+                {
+                    return StatusCode(201);
+                }
+                return StatusCode(500, "Object could not be created");
+            }
+            return BadRequest(this.ModelState);
+
         }
         
         // PUT: api/ShipmentMethod/5

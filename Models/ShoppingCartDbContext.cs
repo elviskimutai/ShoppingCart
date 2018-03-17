@@ -25,6 +25,8 @@ namespace ShoppingCartApi.Models
         public DbSet<ManufacturerCategory> ManufacturerCategories { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<ShipmentMethod> ShipmentMethods { get; set; }
+        public DbSet<BillingInfo> BillingInfos { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
     }
 }

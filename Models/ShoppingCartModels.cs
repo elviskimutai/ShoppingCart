@@ -13,7 +13,9 @@ namespace ShoppingCartApi.Models
     }
 
     public class CustomerOrder {
-
+        public Order Order { get; set; }
+        public BillingInfo BillingInfo { get; set; }
+        public List<OrderItem> OrderItemList { get; set; }
 
     }
 }

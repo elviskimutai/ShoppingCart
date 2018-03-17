@@ -47,16 +47,37 @@ namespace ShoppingCartApi.Models
     }
 
     public class Order {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string OrderNo { get; set; }
         public string Email { get; set; }
-        public string PaymentMethod { get; set; }
-        public string Shipment { get; set; }
+        [ForeignKey("PaymentMethod")]
+        public Guid PaymentMethodId { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
+        [ForeignKey("ShipmentMethod")]
+        public Guid ShipmentMethodId { get; set; }
+        public ShipmentMethod ShipmentMethod { get; set; }
         public DateTime OrderDate { get; set; }
         public string Status { get; set; }
         public bool NotifyShopper { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderId { get; set; }
+        public string CustomerId { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; }
+
+    }
+
+    public class OrderItem {
+        [ForeignKey("Order")]
+        public Guid  OrderId { get; set; }
+        [ForeignKey("Product")]
+        public Guid ProductId { get; set; }
+        public int Qty { get; set; }
+        public decimal Price { get; set; }
+        public decimal Total { get; set; }
+        public Guid OrderItemId { get; set; }
+        public Order Order { get; set; }
+        public Product Product { get; set; }
     }
     public class Manufacturer {
         [Required]
@@ -92,5 +113,18 @@ namespace ShoppingCartApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid PaymentMethodId { get; set; }
         public string Description { get; set; }
+    }
+
+    public class BillingInfo {
+        [ForeignKey("Order")]
+        public Guid OrderId { get; set; }        
+        public string CompanyName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Address { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public Guid BillingInfoId { get; set; }
+        public Order Order { get; set; }
     }
 }
