@@ -13,8 +13,7 @@ namespace ShoppingCartApi.Controllers
     [Produces("application/json")]
     [Route("api/ShipmentMethod")]
     public class ShipmentMethodsController : Controller
-    {
-        private readonly ShoppingCartDbContext _dbContext;
+    {        
         private ShipmentMethodManager _shipmentMethodManager;
         public ShipmentMethodsController(ShoppingCartDbContext _dbContext)
         {

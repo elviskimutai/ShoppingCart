@@ -14,13 +14,13 @@ namespace ShoppingCartApi.Controllers
     public class PaymentMethodsController : Controller
     {
         // GET: api/PaymentMethods
-        private PaymentMethodsManager _paymentMethodsManager;
-        private ShoppingCartDbContext _shoppingCartDbContext;
+        private PaymentMethodsManager _paymentMethodsManager;        
         public PaymentMethodsController(ShoppingCartDbContext shoppingCartDbContext)
         {
             _paymentMethodsManager = new PaymentMethodsManager(shoppingCartDbContext);
         }
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<PaymentMethod>), 200)]
         public IActionResult  Get()
         {
           var paymentMethods= this._paymentMethodsManager.GetAll();

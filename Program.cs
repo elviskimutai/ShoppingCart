@@ -20,7 +20,6 @@ namespace ShoppingCartApi
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
                 try
                 {
                     // Requires using MvcMovie.Models;

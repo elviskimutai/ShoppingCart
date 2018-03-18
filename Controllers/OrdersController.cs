@@ -14,14 +14,13 @@ namespace ShoppingCartApi.Controllers
     public class OrdersController : Controller
     {
         private OrdersManager _ordersManager;
-        private readonly ShoppingCartDbContext _dbContext;
+        
         public OrdersController(ShoppingCartDbContext dbContext)
-        {
-            _dbContext = dbContext;
-            _ordersManager = new OrdersManager(_dbContext);
-
+        {           
+            _ordersManager = new OrdersManager(dbContext);
         }
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Order>), 200)]
         public IActionResult Get() {
             var orders = this._ordersManager.GetAll();
             return new OkObjectResult(orders);
