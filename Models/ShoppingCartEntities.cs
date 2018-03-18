@@ -26,8 +26,7 @@ namespace ShoppingCartApi.Models
 
     public class ProductCategory {
         [Required]
-        public string CategoryName { get; set; }
-        [Required]
+        public string CategoryName { get; set; }        
         public string Description { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -48,11 +47,11 @@ namespace ShoppingCartApi.Models
 
     public class Order {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string OrderNo { get; set; }
+        public int OrderNo { get; set; }
         public string Email { get; set; }
         [ForeignKey("PaymentMethod")]
         public Guid PaymentMethodId { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
         [ForeignKey("ShipmentMethod")]
         public Guid ShipmentMethodId { get; set; }
         public ShipmentMethod ShipmentMethod { get; set; }
@@ -64,6 +63,8 @@ namespace ShoppingCartApi.Models
         public Guid OrderId { get; set; }
         public string CustomerId { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual BillingInfo BillingInfo { get; set; }
+
 
     }
 
@@ -75,9 +76,11 @@ namespace ShoppingCartApi.Models
         public int Qty { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderItemId { get; set; }
-        public Order Order { get; set; }
-        public Product Product { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
     }
     public class Manufacturer {
         [Required]
@@ -124,7 +127,9 @@ namespace ShoppingCartApi.Models
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid BillingInfoId { get; set; }
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
     }
 }

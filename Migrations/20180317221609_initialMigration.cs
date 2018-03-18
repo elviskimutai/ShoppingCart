@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -55,7 +55,7 @@ namespace ShoppingCartApi.Migrations
                 {
                     CategoryId = table.Column<Guid>(nullable: false),
                     CategoryName = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,7 +118,8 @@ namespace ShoppingCartApi.Migrations
                     Email = table.Column<string>(nullable: true),
                     NotifyShopper = table.Column<bool>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
-                    OrderNo = table.Column<string>(nullable: true),
+                    OrderNo = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     PaymentMethodId = table.Column<Guid>(nullable: false),
                     ShipmentMethodId = table.Column<Guid>(nullable: false),
                     Status = table.Column<string>(nullable: true)
@@ -195,7 +196,8 @@ namespace ShoppingCartApi.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_BillingInfos_OrderId",
                 table: "BillingInfos",
-                column: "OrderId");
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_OrderId",

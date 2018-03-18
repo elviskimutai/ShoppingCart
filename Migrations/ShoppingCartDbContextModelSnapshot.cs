@@ -40,7 +40,8 @@ namespace ShoppingCartApi.Migrations
 
                     b.HasKey("BillingInfoId");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("BillingInfos");
                 });
@@ -91,7 +92,7 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<string>("OrderNo")
+                    b.Property<int>("OrderNo")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("PaymentMethodId");
@@ -181,8 +182,7 @@ namespace ShoppingCartApi.Migrations
                     b.Property<string>("CategoryName")
                         .IsRequired();
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                    b.Property<string>("Description");
 
                     b.HasKey("CategoryId");
 
@@ -229,8 +229,8 @@ namespace ShoppingCartApi.Migrations
             modelBuilder.Entity("ShoppingCartApi.Models.BillingInfo", b =>
                 {
                     b.HasOne("ShoppingCartApi.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                        .WithOne("BillingInfo")
+                        .HasForeignKey("ShoppingCartApi.Models.BillingInfo", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
