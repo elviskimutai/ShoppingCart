@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class AddedCommentFieldINProductRating : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,6 +60,21 @@ namespace ShoppingCartApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCategories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductRatings",
+                columns: table => new
+                {
+                    ProductRatingId = table.Column<Guid>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<string>(nullable: true),
+                    ProductId = table.Column<Guid>(nullable: false),
+                    Rating = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductRatings", x => x.ProductRatingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,6 +251,9 @@ namespace ShoppingCartApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductCategories");
+
+            migrationBuilder.DropTable(
+                name: "ProductRatings");
 
             migrationBuilder.DropTable(
                 name: "Shoppers");

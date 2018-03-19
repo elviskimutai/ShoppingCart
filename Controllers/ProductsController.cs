@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Models;
@@ -10,7 +11,7 @@ using ShoppingCartApi.Services;
 namespace ShoppingCartApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/products")]
+    [Route("api/products")]   
     public class ProductsController : Controller
     {
         private ProductsManager _productsManager;

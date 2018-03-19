@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Models;
@@ -10,7 +12,7 @@ using ShoppingCartApi.Services;
 namespace ShoppingCartApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Orders")]
+    [Route("api/Orders")]    
     public class OrdersController : Controller
     {
         private OrdersManager _ordersManager;
@@ -32,15 +34,17 @@ namespace ShoppingCartApi.Controllers
             var orders = this._ordersManager.GetById(id);
             return new OkObjectResult(orders);
         }
-        [HttpPost]
-        public IActionResult Post([FromBody]Order order) {
-            var result = this._ordersManager.Add(order);
+        [HttpPost]        
+        public IActionResult Post([FromBody]Order customerOrderModel) {          
+            var result = this._ordersManager.Add(customerOrderModel);
             if (result) {
                 return new OkResult();
             }
             return StatusCode(500, "could not create order");
         }
-       [HttpDelete("{id}")]
+
+        
+        [HttpDelete("{id}")]
         public IActionResult Delete(Guid id) {
             var result = this._ordersManager.Remove(id);
             if (result) {

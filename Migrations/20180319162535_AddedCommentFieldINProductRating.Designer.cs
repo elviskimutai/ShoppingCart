@@ -11,8 +11,8 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180317221609_initialMigration")]
-    partial class initialMigration
+    [Migration("20180319162535_AddedCommentFieldINProductRating")]
+    partial class AddedCommentFieldINProductRating
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,6 +188,24 @@ namespace ShoppingCartApi.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("ShoppingCartApi.Models.ProductRating", b =>
+                {
+                    b.Property<Guid>("ProductRatingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
+
+                    b.Property<string>("CustomerId");
+
+                    b.Property<Guid>("ProductId");
+
+                    b.Property<int>("Rating");
+
+                    b.HasKey("ProductRatingId");
+
+                    b.ToTable("ProductRatings");
                 });
 
             modelBuilder.Entity("ShoppingCartApi.Models.ShipmentMethod", b =>

@@ -189,6 +189,24 @@ namespace ShoppingCartApi.Migrations
                     b.ToTable("ProductCategories");
                 });
 
+            modelBuilder.Entity("ShoppingCartApi.Models.ProductRating", b =>
+                {
+                    b.Property<Guid>("ProductRatingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comment");
+
+                    b.Property<string>("CustomerId");
+
+                    b.Property<Guid>("ProductId");
+
+                    b.Property<int>("Rating");
+
+                    b.HasKey("ProductRatingId");
+
+                    b.ToTable("ProductRatings");
+                });
+
             modelBuilder.Entity("ShoppingCartApi.Models.ShipmentMethod", b =>
                 {
                     b.Property<Guid>("ShipmentMethodId")

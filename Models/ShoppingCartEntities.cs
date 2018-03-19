@@ -132,4 +132,14 @@ namespace ShoppingCartApi.Models
         public Guid BillingInfoId { get; set; }
         public virtual Order Order { get; set; }
     }
+
+    public class ProductRating {
+        public int Rating { get; set; }
+        public Guid ProductId { get; set; }
+        public string CustomerId { get; set; }
+        public string Comment { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid ProductRatingId { get; set; }
+    }
 }
