@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Microsoft.Extensions.Options;
-
+using ShoppingCartApi.Conventions;
 using ShoppingCartApi.Models;
 
 
@@ -60,7 +60,10 @@ namespace ShoppingCartApi
 
             options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString")));
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Conventions.Add(new ComplexTypeConvention());
+            });
 
             services.AddSwaggerGen(c =>
 

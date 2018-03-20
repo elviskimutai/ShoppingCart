@@ -40,9 +40,6 @@ namespace ShoppingCartApi.Migrations
 
                     b.HasKey("BillingInfoId");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
                     b.ToTable("BillingInfos");
                 });
 
@@ -92,8 +89,7 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("OrderNo");
 
                     b.Property<Guid>("PaymentMethodId");
 
@@ -126,10 +122,6 @@ namespace ShoppingCartApi.Migrations
                     b.Property<decimal>("Total");
 
                     b.HasKey("OrderItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -244,14 +236,6 @@ namespace ShoppingCartApi.Migrations
                     b.ToTable("Shoppers");
                 });
 
-            modelBuilder.Entity("ShoppingCartApi.Models.BillingInfo", b =>
-                {
-                    b.HasOne("ShoppingCartApi.Models.Order", "Order")
-                        .WithOne("BillingInfo")
-                        .HasForeignKey("ShoppingCartApi.Models.BillingInfo", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("ShoppingCartApi.Models.Order", b =>
                 {
                     b.HasOne("ShoppingCartApi.Models.PaymentMethod", "PaymentMethod")
@@ -262,19 +246,6 @@ namespace ShoppingCartApi.Migrations
                     b.HasOne("ShoppingCartApi.Models.ShipmentMethod", "ShipmentMethod")
                         .WithMany()
                         .HasForeignKey("ShipmentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ShoppingCartApi.Models.OrderItem", b =>
-                {
-                    b.HasOne("ShoppingCartApi.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShoppingCartApi.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

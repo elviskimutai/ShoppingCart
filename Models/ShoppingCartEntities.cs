@@ -45,16 +45,11 @@ namespace ShoppingCartApi.Models
         public Guid ShopperId{ get; set; }
     }
 
-    public class Order {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public class Order {        
         public int OrderNo { get; set; }
-        public string Email { get; set; }
-        [ForeignKey("PaymentMethod")]
+        public string Email { get; set; }        
         public Guid PaymentMethodId { get; set; }
-        public virtual PaymentMethod PaymentMethod { get; set; }
-        [ForeignKey("ShipmentMethod")]
-        public Guid ShipmentMethodId { get; set; }
-        public ShipmentMethod ShipmentMethod { get; set; }
+        public Guid ShipmentMethodId { get; set; }       
         public DateTime OrderDate { get; set; }
         public string Status { get; set; }
         public bool NotifyShopper { get; set; }
@@ -62,25 +57,18 @@ namespace ShoppingCartApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderId { get; set; }
         public string CustomerId { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
-        public virtual BillingInfo BillingInfo { get; set; }
-
-
     }
 
     public class OrderItem {
-        [ForeignKey("Order")]
-        public Guid  OrderId { get; set; }
-        [ForeignKey("Product")]
+       
+        public Guid  OrderId { get; set; }        
         public Guid ProductId { get; set; }
         public int Qty { get; set; }
         public decimal Price { get; set; }
         public decimal Total { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid OrderItemId { get; set; }
-        public virtual Order Order { get; set; }
-        public virtual Product Product { get; set; }
+        public Guid OrderItemId { get; set; }       
     }
     public class Manufacturer {
         [Required]
@@ -118,8 +106,7 @@ namespace ShoppingCartApi.Models
         public string Description { get; set; }
     }
 
-    public class BillingInfo {
-        [ForeignKey("Order")]
+    public class BillingInfo {      
         public Guid OrderId { get; set; }        
         public string CompanyName { get; set; }
         public string FirstName { get; set; }
@@ -129,8 +116,7 @@ namespace ShoppingCartApi.Models
         public string City { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid BillingInfoId { get; set; }
-        public virtual Order Order { get; set; }
+        public Guid BillingInfoId { get; set; }        
     }
 
     public class ProductRating {

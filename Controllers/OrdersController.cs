@@ -34,13 +34,14 @@ namespace ShoppingCartApi.Controllers
             var orders = this._ordersManager.GetById(id);
             return new OkObjectResult(orders);
         }
-        [HttpPost]        
-        public IActionResult Post([FromBody]Order customerOrderModel) {          
-            var result = this._ordersManager.Add(customerOrderModel);
+        [HttpPost]
+        public IActionResult Post([FromBody]CustomerOrder customerOrderModel) {
+            var result = this._ordersManager.CreateNewOrder(customerOrderModel);
             if (result) {
                 return new OkResult();
             }
             return StatusCode(500, "could not create order");
+            
         }
 
         
