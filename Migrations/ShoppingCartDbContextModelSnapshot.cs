@@ -36,6 +36,8 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<Guid>("OrderId");
 
+                    b.Property<string>("PhoneNumber");
+
                     b.Property<string>("PostalCode");
 
                     b.HasKey("BillingInfoId");
@@ -89,7 +91,8 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo");
+                    b.Property<int>("OrderNo")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("PaymentMethodId");
 
@@ -98,10 +101,6 @@ namespace ShoppingCartApi.Migrations
                     b.Property<string>("Status");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("PaymentMethodId");
-
-                    b.HasIndex("ShipmentMethodId");
 
                     b.ToTable("Orders");
                 });
@@ -234,19 +233,6 @@ namespace ShoppingCartApi.Migrations
                     b.HasKey("ShopperId");
 
                     b.ToTable("Shoppers");
-                });
-
-            modelBuilder.Entity("ShoppingCartApi.Models.Order", b =>
-                {
-                    b.HasOne("ShoppingCartApi.Models.PaymentMethod", "PaymentMethod")
-                        .WithMany()
-                        .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShoppingCartApi.Models.ShipmentMethod", "ShipmentMethod")
-                        .WithMany()
-                        .HasForeignKey("ShipmentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -1,19 +1,35 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using ShoppingCartApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using Flurl.Http;
 
 namespace ShoppingCartApi.Services
 {
     public class OrdersManager : IRepository<Order>
     {
         private readonly ShoppingCartDbContext _dbContext;
-        public OrdersManager(ShoppingCartDbContext dbContext)
+        private readonly IOptions<StkSetting> _stkSettings;
+        private readonly IOptions<ShoppingCartStkPushKey> _shoppingCartStkPushKey;
+        private readonly IOptions<ShoppingCartStkPushKey> shoppingCartStkPushKey;
+        public OrdersManager(ShoppingCartDbContext dbContext, IOptions<StkSetting> stkSettings, IOptions<ShoppingCartStkPushKey> shoppingCartStkPushKey)
         {
             _dbContext = dbContext;
+            _stkSettings = stkSettings;
+            _shoppingCartStkPushKey = shoppingCartStkPushKey;
+            SendStkPushNotifaction();
+
+
+
         }
 
 
@@ -104,6 +120,7 @@ namespace ShoppingCartApi.Services
                 this._dbContext.BillingInfos.Add(billingInfo);
                 this._dbContext.OrderItems.AddRange(orderItems);
                 this._dbContext.SaveChanges();
+                SendStkPushNotifaction();
                 return true;
             }
             catch (Exception)
@@ -111,6 +128,28 @@ namespace ShoppingCartApi.Services
 
                 throw;
             }
+
+           
+        }
+        private void SendStkPushNotifaction() {
+            
+          
+            ShoppingCartApiAccessToken shoppingCartApiAccessToken = GetAuthToken();
+            var result =  "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"                
+                .WithOAuthBearerToken(shoppingCartApiAccessToken.AccessToken)
+                .PostJsonAsync(this._stkSettings.Value)
+                .ReceiveString().Result;
+        }
+
+
+        private ShoppingCartApiAccessToken GetAuthToken() {
+
+            var result = _shoppingCartStkPushKey.Value.Url
+                .WithBasicAuth(_shoppingCartStkPushKey.Value.ConsumerKey, _shoppingCartStkPushKey.Value.ConsumerSecret)
+                .GetStringAsync().Result;
+           ShoppingCartApiAccessToken shoppingCartApiAccessToken = JsonConvert.DeserializeObject<ShoppingCartApiAccessToken>(result);
+           Debug.Write(JsonConvert.SerializeObject(this._stkSettings.Value));
+           return shoppingCartApiAccessToken;
         }
     }
 }

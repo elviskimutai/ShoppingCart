@@ -21,9 +21,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ShoppingCartApi.Conventions;
 using ShoppingCartApi.Models;
-
-
-
+using ShoppingCartApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 
@@ -60,6 +58,8 @@ namespace ShoppingCartApi
 
             options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString")));
 
+            services.Configure<StkSetting>(options => Configuration.GetSection("StkSetting").Bind(options));
+            services.Configure<ShoppingCartStkPushKey>(options => Configuration.GetSection("ShoppingCartStkPushKey").Bind(options));
             services.AddMvc(options =>
             {
                 options.Conventions.Add(new ComplexTypeConvention());

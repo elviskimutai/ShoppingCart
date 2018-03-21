@@ -45,7 +45,8 @@ namespace ShoppingCartApi.Models
         public Guid ShopperId{ get; set; }
     }
 
-    public class Order {        
+    public class Order {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrderNo { get; set; }
         public string Email { get; set; }        
         public Guid PaymentMethodId { get; set; }
@@ -116,7 +117,8 @@ namespace ShoppingCartApi.Models
         public string City { get; set; }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid BillingInfoId { get; set; }        
+        public Guid BillingInfoId { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
     public class ProductRating {

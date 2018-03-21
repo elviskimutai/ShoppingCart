@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class RemovedForeighnKey : Migration
+    public partial class AddedPhoneNumberFieldForBillingInfo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,6 +19,7 @@ namespace ShoppingCartApi.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     OrderId = table.Column<Guid>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -68,6 +69,26 @@ namespace ShoppingCartApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.OrderItemId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<Guid>(nullable: false),
+                    CustomerId = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    NotifyShopper = table.Column<bool>(nullable: false),
+                    OrderDate = table.Column<DateTime>(nullable: false),
+                    OrderNo = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PaymentMethodId = table.Column<Guid>(nullable: false),
+                    ShipmentMethodId = table.Column<Guid>(nullable: false),
+                    Status = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,47 +178,6 @@ namespace ShoppingCartApi.Migrations
                 {
                     table.PrimaryKey("PK_Shoppers", x => x.ShopperId);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<Guid>(nullable: false),
-                    CustomerId = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    NotifyShopper = table.Column<bool>(nullable: false),
-                    OrderDate = table.Column<DateTime>(nullable: false),
-                    OrderNo = table.Column<int>(nullable: false),
-                    PaymentMethodId = table.Column<Guid>(nullable: false),
-                    ShipmentMethodId = table.Column<Guid>(nullable: false),
-                    Status = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Orders_PaymentMethods_PaymentMethodId",
-                        column: x => x.PaymentMethodId,
-                        principalTable: "PaymentMethods",
-                        principalColumn: "PaymentMethodId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_ShipmentMethods_ShipmentMethodId",
-                        column: x => x.ShipmentMethodId,
-                        principalTable: "ShipmentMethods",
-                        principalColumn: "ShipmentMethodId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_PaymentMethodId",
-                table: "Orders",
-                column: "PaymentMethodId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_ShipmentMethodId",
-                table: "Orders",
-                column: "ShipmentMethodId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -218,6 +198,9 @@ namespace ShoppingCartApi.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "PaymentMethods");
+
+            migrationBuilder.DropTable(
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
@@ -227,13 +210,10 @@ namespace ShoppingCartApi.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Shoppers");
-
-            migrationBuilder.DropTable(
-                name: "PaymentMethods");
-
-            migrationBuilder.DropTable(
                 name: "ShipmentMethods");
+
+            migrationBuilder.DropTable(
+                name: "Shoppers");
         }
     }
 }

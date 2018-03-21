@@ -11,8 +11,8 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180320080653_RemovedForeighnKey")]
-    partial class RemovedForeighnKey
+    [Migration("20180321094139_AddedPhoneNumberFieldForBillingInfo")]
+    partial class AddedPhoneNumberFieldForBillingInfo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,8 @@ namespace ShoppingCartApi.Migrations
                     b.Property<string>("LastName");
 
                     b.Property<Guid>("OrderId");
+
+                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("PostalCode");
 
@@ -90,7 +92,8 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo");
+                    b.Property<int>("OrderNo")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("PaymentMethodId");
 
@@ -99,10 +102,6 @@ namespace ShoppingCartApi.Migrations
                     b.Property<string>("Status");
 
                     b.HasKey("OrderId");
-
-                    b.HasIndex("PaymentMethodId");
-
-                    b.HasIndex("ShipmentMethodId");
 
                     b.ToTable("Orders");
                 });
@@ -235,19 +234,6 @@ namespace ShoppingCartApi.Migrations
                     b.HasKey("ShopperId");
 
                     b.ToTable("Shoppers");
-                });
-
-            modelBuilder.Entity("ShoppingCartApi.Models.Order", b =>
-                {
-                    b.HasOne("ShoppingCartApi.Models.PaymentMethod", "PaymentMethod")
-                        .WithMany()
-                        .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ShoppingCartApi.Models.ShipmentMethod", "ShipmentMethod")
-                        .WithMany()
-                        .HasForeignKey("ShipmentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

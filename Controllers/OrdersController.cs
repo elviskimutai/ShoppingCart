@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using ShoppingCartApi.Models;
 using ShoppingCartApi.Services;
 
@@ -17,9 +18,9 @@ namespace ShoppingCartApi.Controllers
     {
         private OrdersManager _ordersManager;
         
-        public OrdersController(ShoppingCartDbContext dbContext)
+        public OrdersController(ShoppingCartDbContext dbContext, IOptions<StkSetting> settings, IOptions<ShoppingCartStkPushKey> shoppingCartStkPushKey)
         {           
-            _ordersManager = new OrdersManager(dbContext);
+            _ordersManager = new OrdersManager(dbContext, settings, shoppingCartStkPushKey);
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Order>), 200)]
