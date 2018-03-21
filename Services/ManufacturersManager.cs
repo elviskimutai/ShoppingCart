@@ -6,30 +6,19 @@ using System.Threading.Tasks;
 
 namespace ShoppingCartApi.Services
 {
-    public class ShoppersManager: IRepository<Shopper>
+    public class ManufacturersManager : IRepository<Manufacturer>
     {
-        private readonly ShoppingCartDbContext _dbContext;
-        public ShoppersManager(ShoppingCartDbContext dbContext )
-        {
-            this._dbContext = dbContext;
-
-        }
-
-        public bool Add(Shopper t)
+        public bool Add(Manufacturer t)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Shopper> GetAll()
+        public IEnumerable<Manufacturer> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Shopper> GetAllShopper() {
-            return null;
-        }
-
-        public Shopper GetById(Guid id)
+        public Manufacturer GetById(Guid id)
         {
             throw new NotImplementedException();
         }

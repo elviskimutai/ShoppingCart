@@ -15,10 +15,10 @@ namespace ShoppingCartApi.Controllers
     [Route("api/ShipmentMethod")]    
     public class ShipmentMethodsController : Controller
     {        
-        private ShipmentMethodManager _shipmentMethodManager;
-        public ShipmentMethodsController(ShoppingCartDbContext _dbContext)
+        private IRepository<ShipmentMethod> _shipmentMethodManager;
+        public ShipmentMethodsController(IRepository<ShipmentMethod> shipmentMethodManager)
         {
-            this._shipmentMethodManager = new ShipmentMethodManager(_dbContext);
+            this._shipmentMethodManager = shipmentMethodManager;
         }
         // GET: api/ShipmentMethod
         [HttpGet]

@@ -14,13 +14,12 @@ namespace ShoppingCartApi.Controllers
     [Route("api/products")]   
     public class ProductsController : Controller
     {
-        private ProductsManager _productsManager;
-        private ShoppingCartDbContext _shoppingCartDbContext;
 
-        public ProductsController(ShoppingCartDbContext shoppingCartDbContext)
+
+        private IRepository<Product> _productsManager;
+        public ProductsController(IRepository<Product> productsManager)
         {
-            _shoppingCartDbContext = shoppingCartDbContext;
-            _productsManager = new ProductsManager(_shoppingCartDbContext);//  productsManager;
+            _productsManager = productsManager;//  productsManager;
         }
 
         [Route("all")]

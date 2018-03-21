@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class AddedPhoneNumberFieldForBillingInfo : Migration
+    public partial class RemovedAutoFromOrders : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -80,8 +80,7 @@ namespace ShoppingCartApi.Migrations
                     Email = table.Column<string>(nullable: true),
                     NotifyShopper = table.Column<bool>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
-                    OrderNo = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    OrderNo = table.Column<int>(nullable: false),
                     PaymentMethodId = table.Column<Guid>(nullable: false),
                     ShipmentMethodId = table.Column<Guid>(nullable: false),
                     Status = table.Column<string>(nullable: true)

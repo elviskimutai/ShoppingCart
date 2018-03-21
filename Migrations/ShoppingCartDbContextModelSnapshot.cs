@@ -91,8 +91,7 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("OrderNo");
 
                     b.Property<Guid>("PaymentMethodId");
 

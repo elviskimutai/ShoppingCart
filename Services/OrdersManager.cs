@@ -26,7 +26,7 @@ namespace ShoppingCartApi.Services
             _dbContext = dbContext;
             _stkSettings = stkSettings;
             _shoppingCartStkPushKey = shoppingCartStkPushKey;
-            SendStkPushNotifaction();
+          
 
 
 
@@ -102,7 +102,8 @@ namespace ShoppingCartApi.Services
                    LastName =customerOrder.BillingInfo?.LastName,
                    OrderId = order.OrderId,
                    PostalCode= customerOrder.BillingInfo?.PostalCode,
-                   Address= customerOrder.BillingInfo?.Address
+                   Address= customerOrder.BillingInfo?.Address,
+                   PhoneNumber =customerOrder.BillingInfo?.PhoneNumber
                 };
                 var orderItems = new List<OrderItem>();
                 foreach (var orderitem in customerOrder.OrderItems)

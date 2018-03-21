@@ -15,10 +15,10 @@ namespace ShoppingCartApi.Controllers
     public class PaymentMethodsController : Controller
     {
         // GET: api/PaymentMethods
-        private PaymentMethodsManager _paymentMethodsManager;        
-        public PaymentMethodsController(ShoppingCartDbContext shoppingCartDbContext)
+        private IRepository<PaymentMethod> _paymentMethodsManager;        
+        public PaymentMethodsController(IRepository<PaymentMethod> paymentMethodsManager)
         {
-            _paymentMethodsManager = new PaymentMethodsManager(shoppingCartDbContext);
+            _paymentMethodsManager = paymentMethodsManager;
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<PaymentMethod>), 200)]

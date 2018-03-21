@@ -57,8 +57,13 @@ namespace ShoppingCartApi
             services.AddDbContext<ShoppingCartDbContext>(options =>
 
             options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString")));
-
             services.Configure<StkSetting>(options => Configuration.GetSection("StkSetting").Bind(options));
+            services.AddTransient<IRepository<Order>, OrdersManager>();
+            services.AddTransient<IRepository<ShipmentMethod>, ShipmentMethodManager>();
+            services.AddTransient<IRepository<PaymentMethod>, PaymentMethodsManager>();
+            services.AddTransient<IRepository<Product>, ProductsManager>();
+            services.AddTransient<IRepository<Shopper>, ShoppersManager>();
+            services.AddTransient<IRepository<Manufacturer>, ManufacturersManager>();
             services.Configure<ShoppingCartStkPushKey>(options => Configuration.GetSection("ShoppingCartStkPushKey").Bind(options));
             services.AddMvc(options =>
             {

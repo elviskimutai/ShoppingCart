@@ -14,12 +14,13 @@ namespace ShoppingCartApi.Controllers
     [Route("api/CheckoutOption")]    
     public class CheckoutOptionController : Controller
     {
-        private ShipmentMethodManager _shipmentMethodManager;
-        private PaymentMethodsManager _paymentMethodsManager; 
-        public CheckoutOptionController(ShoppingCartDbContext dbContext)
+        private IRepository<PaymentMethod> _paymentMethodsManager;
+        private IRepository<ShipmentMethod> _shipmentMethodManager;
+        public CheckoutOptionController(IRepository<PaymentMethod> paymentMethodsManager, 
+            IRepository<ShipmentMethod> shipmentMethodManager)
         {
-            this._paymentMethodsManager = new PaymentMethodsManager(dbContext);
-            this._shipmentMethodManager = new ShipmentMethodManager(dbContext);
+            this._paymentMethodsManager = paymentMethodsManager;
+            this._shipmentMethodManager = shipmentMethodManager;
         }
         [HttpGet]
         public IActionResult Get() {

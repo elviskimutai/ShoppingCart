@@ -11,8 +11,8 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180321094139_AddedPhoneNumberFieldForBillingInfo")]
-    partial class AddedPhoneNumberFieldForBillingInfo
+    [Migration("20180321101354_RemovedAutoFromOrders")]
+    partial class RemovedAutoFromOrders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,8 +92,7 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("OrderNo");
 
                     b.Property<Guid>("PaymentMethodId");
 

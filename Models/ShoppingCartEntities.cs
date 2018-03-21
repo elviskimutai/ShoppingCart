@@ -46,7 +46,7 @@ namespace ShoppingCartApi.Models
     }
 
     public class Order {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+       
         public int OrderNo { get; set; }
         public string Email { get; set; }        
         public Guid PaymentMethodId { get; set; }

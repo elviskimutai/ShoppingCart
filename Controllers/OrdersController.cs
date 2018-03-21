@@ -16,11 +16,11 @@ namespace ShoppingCartApi.Controllers
     [Route("api/Orders")]    
     public class OrdersController : Controller
     {
-        private OrdersManager _ordersManager;
+        private IRepository<Order> _ordersManager;
         
-        public OrdersController(ShoppingCartDbContext dbContext, IOptions<StkSetting> settings, IOptions<ShoppingCartStkPushKey> shoppingCartStkPushKey)
-        {           
-            _ordersManager = new OrdersManager(dbContext, settings, shoppingCartStkPushKey);
+        public OrdersController(IRepository<Order> ordersManager) 
+        {
+            _ordersManager = ordersManager;
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Order>), 200)]
@@ -37,7 +37,7 @@ namespace ShoppingCartApi.Controllers
         }
         [HttpPost]
         public IActionResult Post([FromBody]CustomerOrder customerOrderModel) {
-            var result = this._ordersManager.CreateNewOrder(customerOrderModel);
+            var result =((OrdersManager) this._ordersManager).CreateNewOrder(customerOrderModel);
             if (result) {
                 return new OkResult();
             }
