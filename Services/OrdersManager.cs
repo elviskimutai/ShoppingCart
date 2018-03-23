@@ -121,7 +121,7 @@ namespace ShoppingCartApi.Services
                 this._dbContext.BillingInfos.Add(billingInfo);
                 this._dbContext.OrderItems.AddRange(orderItems);
                 this._dbContext.SaveChanges();
-                SendStkPushNotifaction();
+               //ToDo SendStkPushNotifaction();
                 return true;
             }
             catch (Exception)

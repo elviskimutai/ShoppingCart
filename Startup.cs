@@ -23,9 +23,6 @@ using ShoppingCartApi.Conventions;
 using ShoppingCartApi.Models;
 using ShoppingCartApi.Services;
 using Swashbuckle.AspNetCore.Swagger;
-
-
-
 namespace ShoppingCartApi
 
 {
@@ -55,8 +52,8 @@ namespace ShoppingCartApi
         {
 
             services.AddDbContext<ShoppingCartDbContext>(options =>
-
-            options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString")));
+            options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString"))
+            );
             services.Configure<StkSetting>(options => Configuration.GetSection("StkSetting").Bind(options));
             services.AddTransient<IRepository<Order>, OrdersManager>();
             services.AddTransient<IRepository<ShipmentMethod>, ShipmentMethodManager>();
@@ -64,6 +61,7 @@ namespace ShoppingCartApi
             services.AddTransient<IRepository<Product>, ProductsManager>();
             services.AddTransient<IRepository<Shopper>, ShoppersManager>();
             services.AddTransient<IRepository<Manufacturer>, ManufacturersManager>();
+            services.AddTransient<IRepository<ProductCategory>, ProductCategoryManager>();
             services.Configure<ShoppingCartStkPushKey>(options => Configuration.GetSection("ShoppingCartStkPushKey").Bind(options));
             services.AddMvc(options =>
             {
@@ -112,7 +110,7 @@ namespace ShoppingCartApi
 
             {
 
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Cart V1");
 
             });
 

@@ -39,7 +39,7 @@ namespace ShoppingCartApi.Controllers
         public IActionResult Post([FromBody]CustomerOrder customerOrderModel) {
             var result =((OrdersManager) this._ordersManager).CreateNewOrder(customerOrderModel);
             if (result) {
-                return new OkResult();
+                return new OkObjectResult("your order has been recived");
             }
             return StatusCode(500, "could not create order");
             

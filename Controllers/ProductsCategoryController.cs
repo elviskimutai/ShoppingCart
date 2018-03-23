@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartApi.Models;
+using ShoppingCartApi.Services;
 
 namespace ShoppingCartApi.Controllers
 {
@@ -13,6 +14,12 @@ namespace ShoppingCartApi.Controllers
     [Route("api/ProductsCategory")]   
     public class ProductsCategoryController : Controller
     {
+        private IRepository<ProductCategory> _productCategoryManager;
+        public ProductsCategoryController(IRepository<ProductCategory> productCategoryManager)
+        {
+            _productCategoryManager = productCategoryManager;
+
+        }
         // GET: api/ProductsCategory
         [HttpGet]
         public IActionResult Get()
