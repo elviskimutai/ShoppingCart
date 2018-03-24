@@ -3,9 +3,12 @@
 using System.Collections.Generic;
 
 using System.Linq;
-
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
-
+using AspNetCore.Firebase.Authentication.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using ShoppingCartApi.Conventions;
 using ShoppingCartApi.Models;
 using ShoppingCartApi.Services;
@@ -68,6 +72,20 @@ namespace ShoppingCartApi
                 options.Conventions.Add(new ComplexTypeConvention());
             });
 
+            services
+     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+     .AddJwtBearer(options =>
+     {
+         options.Authority = Configuration["Jwt:Issuer"];
+         options.TokenValidationParameters = new TokenValidationParameters
+         {
+             ValidateIssuer = true,
+             ValidIssuer = Configuration["Jwt:Issuer"],
+             ValidateAudience = true,
+             ValidAudience = Configuration["Jwt:aud"],
+             ValidateLifetime = true
+         };
+     });
             services.AddSwaggerGen(c =>
 
             {
@@ -98,7 +116,8 @@ namespace ShoppingCartApi
 
             }
 
-            app.UseCors(builder => {
+            app.UseCors(builder =>
+            {
 
                 builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().Build();
 
@@ -113,7 +132,7 @@ namespace ShoppingCartApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Cart V1");
 
             });
-
+            app.UseAuthentication();
             app.UseMvc();
 
         }

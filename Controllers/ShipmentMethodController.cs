@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http.Description;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,8 @@ using ShoppingCartApi.Services;
 namespace ShoppingCartApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ShipmentMethod")]    
+    [Route("api/ShipmentMethod")]
+    [Authorize]
     public class ShipmentMethodsController : Controller
     {        
         private IRepository<ShipmentMethod> _shipmentMethodManager;

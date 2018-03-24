@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,11 @@ using ShoppingCartApi.Services;
 namespace ShoppingCartApi.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Orders")]    
+    [Route("api/Orders")]  
+    [Authorize]
     public class OrdersController : Controller
     {
+
         private IRepository<Order> _ordersManager;
         
         public OrdersController(IRepository<Order> ordersManager) 
