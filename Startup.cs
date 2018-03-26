@@ -99,6 +99,11 @@ namespace ShoppingCartApi
                     Type = "apiKey"
                 });
 
+                c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                                                 {
+                                       { "Bearer", new string[] { } }
+                                    });
+
             });
 
 

@@ -38,6 +38,10 @@ namespace ShoppingCartApi.Controllers
             var orders = this._ordersManager.GetById(id);
             return new OkObjectResult(orders);
         }
+        [HttpGet("customer/{id}", Name = "GetCustomerOrders")]
+        public IActionResult GetCustomerOrders([FromQuery]String id) {
+            return null;
+        }
         [HttpPost]
         public IActionResult Post([FromBody]CustomerOrder customerOrderModel) {
             var result =((OrdersManager) this._ordersManager).CreateNewOrder(customerOrderModel);
