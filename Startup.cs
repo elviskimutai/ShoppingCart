@@ -91,6 +91,13 @@ namespace ShoppingCartApi
             {
 
                 c.SwaggerDoc("v1", new Info { Title = "Shopping Cart Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
 
             });
 
