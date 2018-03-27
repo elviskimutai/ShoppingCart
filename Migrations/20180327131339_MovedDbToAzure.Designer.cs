@@ -11,14 +11,15 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180321101354_RemovedAutoFromOrders")]
-    partial class RemovedAutoFromOrders
+    [Migration("20180327131339_MovedDbToAzure")]
+    partial class MovedDbToAzure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
+                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("ShoppingCartApi.Models.BillingInfo", b =>
                 {

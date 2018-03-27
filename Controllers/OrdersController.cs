@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -40,11 +41,12 @@ namespace ShoppingCartApi.Controllers
         }
         [HttpGet("customer/{id}", Name = "GetCustomerOrders")]
         public IActionResult GetCustomerOrders([FromQuery]String id) {
-            return null;
+            var result = ((OrdersManager)this._ordersManager).getCustomerOrders(id);
+            return new OkObjectResult( result);
         }
         [HttpPost]
         public IActionResult Post([FromBody]CustomerOrder customerOrderModel) {
-            var result =((OrdersManager) this._ordersManager).CreateNewOrder(customerOrderModel);
+            var result =((OrdersManager) this._ordersManager).CreateNewOrder(customerOrderModel, User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             if (result) {
                 return new OkObjectResult("your order has been recived");
             }

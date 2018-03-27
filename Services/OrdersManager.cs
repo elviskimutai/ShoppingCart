@@ -81,18 +81,18 @@ namespace ShoppingCartApi.Services
 
         }
 
-        public bool CreateNewOrder(CustomerOrder customerOrder) {
+        public bool CreateNewOrder(CustomerOrder customerOrder, string customerId) {
             try
             {
                 var order = new Order() {
-                    CustomerId = customerOrder.CustomerId,
+                    CustomerId = customerId,
                     Email = customerOrder.Email,
                     NotifyShopper = customerOrder.NotifyShopper,
                     OrderDate = DateTime.Now,
                     OrderId = Guid.NewGuid(),
                     PaymentMethodId=customerOrder.PaymentMethodId,
                     ShipmentMethodId=customerOrder.ShipmentMethodId,
-                    Status="New Order" 
+                    Status="New Order",                    
                 };
 
                 var billingInfo = new BillingInfo() {
@@ -103,7 +103,7 @@ namespace ShoppingCartApi.Services
                    OrderId = order.OrderId,
                    PostalCode= customerOrder.BillingInfo?.PostalCode,
                    Address= customerOrder.BillingInfo?.Address,
-                   PhoneNumber =customerOrder.BillingInfo?.PhoneNumber
+                   PhoneNumber =customerOrder.BillingInfo?.PhoneNumber,                   
                 };
                 var orderItems = new List<OrderItem>();
                 foreach (var orderitem in customerOrder.OrderItems)
@@ -128,9 +128,13 @@ namespace ShoppingCartApi.Services
             {
 
                 throw;
-            }
+            }           
+        }
 
-           
+        public List<Order> getCustomerOrders(string userId) {
+            var customersOrders =
+                this._dbContext.Orders.Where(x => x.CustomerId == userId).Select(x => x).ToList();
+            return customersOrders;
         }
         private void SendStkPushNotifaction() {
             

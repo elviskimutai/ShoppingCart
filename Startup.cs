@@ -56,7 +56,7 @@ namespace ShoppingCartApi
         {
 
             services.AddDbContext<ShoppingCartDbContext>(options =>
-            options.UseSqlite(Configuration.GetConnectionString("ShoppingCartDbConnectionString"))
+            options.UseSqlServer(Configuration.GetConnectionString("ShoppingCartDbConnectionString"))
             );
             services.Configure<StkSetting>(options => Configuration.GetSection("StkSetting").Bind(options));
             services.AddTransient<IRepository<Order>, OrdersManager>();

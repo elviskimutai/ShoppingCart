@@ -58,6 +58,8 @@ namespace ShoppingCartApi.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid OrderId { get; set; }
         public string CustomerId { get; set; }
+        [NotMapped]
+        public decimal OrderTotal { get; set; }
     }
 
     public class OrderItem {

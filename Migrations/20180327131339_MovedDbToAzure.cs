@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class RemovedAutoFromOrders : Migration
+    public partial class MovedDbToAzure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
