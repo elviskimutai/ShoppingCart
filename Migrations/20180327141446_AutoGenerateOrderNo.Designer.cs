@@ -11,8 +11,8 @@ using System;
 namespace ShoppingCartApi.Migrations
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    [Migration("20180327131339_MovedDbToAzure")]
-    partial class MovedDbToAzure
+    [Migration("20180327141446_AutoGenerateOrderNo")]
+    partial class AutoGenerateOrderNo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -93,7 +93,8 @@ namespace ShoppingCartApi.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int>("OrderNo");
+                    b.Property<int>("OrderNo")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("PaymentMethodId");
 

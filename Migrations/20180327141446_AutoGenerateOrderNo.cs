@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
 namespace ShoppingCartApi.Migrations
 {
-    public partial class MovedDbToAzure : Migration
+    public partial class AutoGenerateOrderNo : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -80,7 +81,8 @@ namespace ShoppingCartApi.Migrations
                     Email = table.Column<string>(nullable: true),
                     NotifyShopper = table.Column<bool>(nullable: false),
                     OrderDate = table.Column<DateTime>(nullable: false),
-                    OrderNo = table.Column<int>(nullable: false),
+                    OrderNo = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PaymentMethodId = table.Column<Guid>(nullable: false),
                     ShipmentMethodId = table.Column<Guid>(nullable: false),
                     Status = table.Column<string>(nullable: true)

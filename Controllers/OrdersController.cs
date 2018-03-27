@@ -40,7 +40,7 @@ namespace ShoppingCartApi.Controllers
             return new OkObjectResult(orders);
         }
         [HttpGet("customer/{id}", Name = "GetCustomerOrders")]
-        public IActionResult GetCustomerOrders([FromQuery]String id) {
+        public IActionResult GetCustomerOrders([FromRoute]String id) {
             var result = ((OrdersManager)this._ordersManager).getCustomerOrders(id);
             return new OkObjectResult( result);
         }
