@@ -26,7 +26,7 @@ namespace ShoppingCartApi.Services
             _dbContext = dbContext;
             _stkSettings = stkSettings;
             _shoppingCartStkPushKey = shoppingCartStkPushKey;
-          
+
 
 
 
@@ -39,7 +39,7 @@ namespace ShoppingCartApi.Services
             try
             {
                 this._dbContext.Orders.Add(order);
-              
+
                 this._dbContext.SaveChanges();
                 return true;
             }
@@ -77,43 +77,47 @@ namespace ShoppingCartApi.Services
 
                 throw;
             }
-           
+
 
         }
 
-        public bool CreateNewOrder(CustomerOrder customerOrder, string customerId) {
+        public bool CreateNewOrder(CustomerOrder customerOrder, string customerId)
+        {
             try
             {
-                var order = new Order() {
+                var order = new Order()
+                {
                     CustomerId = customerId,
                     Email = customerOrder.Email,
                     NotifyShopper = customerOrder.NotifyShopper,
                     OrderDate = DateTime.Now,
                     OrderId = Guid.NewGuid(),
-                    PaymentMethodId=customerOrder.PaymentMethodId,
-                    ShipmentMethodId=customerOrder.ShipmentMethodId,
-                    Status="New Order",                    
+                    PaymentMethodId = customerOrder.PaymentMethodId,
+                    ShipmentMethodId = customerOrder.ShipmentMethodId,
+                    Status = "New Order",
                 };
 
-                var billingInfo = new BillingInfo() {
-                   City= customerOrder.BillingInfo?.City,
-                   CompanyName=customerOrder.BillingInfo?.CompanyName,
-                   FirstName= customerOrder.BillingInfo?.FirstName,
-                   LastName =customerOrder.BillingInfo?.LastName,
-                   OrderId = order.OrderId,
-                   PostalCode= customerOrder.BillingInfo?.PostalCode,
-                   Address= customerOrder.BillingInfo?.Address,
-                   PhoneNumber =customerOrder.BillingInfo?.PhoneNumber,                   
+                var billingInfo = new BillingInfo()
+                {
+                    City = customerOrder.BillingInfo?.City,
+                    CompanyName = customerOrder.BillingInfo?.CompanyName,
+                    FirstName = customerOrder.BillingInfo?.FirstName,
+                    LastName = customerOrder.BillingInfo?.LastName,
+                    OrderId = order.OrderId,
+                    PostalCode = customerOrder.BillingInfo?.PostalCode,
+                    Address = customerOrder.BillingInfo?.Address,
+                    PhoneNumber = customerOrder.BillingInfo?.PhoneNumber,
                 };
                 var orderItems = new List<OrderItem>();
                 foreach (var orderitem in customerOrder.OrderItems)
                 {
-                    orderItems.Add(new OrderItem() {
-                        OrderId=  order.OrderId,
-                        Price= orderitem.Price,
-                        ProductId=orderitem.ProductId,
-                        Qty= orderitem.Qty,
-                        Total= orderitem.Total,
+                    orderItems.Add(new OrderItem()
+                    {
+                        OrderId = order.OrderId,
+                        Price = orderitem.Price,
+                        ProductId = orderitem.ProductId,
+                        Qty = orderitem.Qty,
+                        Total = orderitem.Total,
                     });
 
                 }
@@ -121,40 +125,53 @@ namespace ShoppingCartApi.Services
                 this._dbContext.BillingInfos.Add(billingInfo);
                 this._dbContext.OrderItems.AddRange(orderItems);
                 this._dbContext.SaveChanges();
-               //ToDo SendStkPushNotifaction();
+                //ToDo SendStkPushNotifaction();
                 return true;
             }
             catch (Exception)
             {
 
                 throw;
-            }           
+            }
         }
 
-        public List<Order> getCustomerOrders(string userId) {
-            var customersOrders =
-                this._dbContext.Orders.Where(x => x.CustomerId == userId).Select(x => x).ToList();
-            return customersOrders;
+        public List<Order> getCustomerOrders(string userId)        {
+            var customersOrderList = (from orders in this._dbContext.Orders where orders.CustomerId== userId
+                                      select new
+                                      {
+                                          OrderTotal = this._dbContext.OrderItems.Where(x => x.OrderId == orders.OrderId).Select(x => x.Total).Sum(),
+                                          OrderDate = orders.OrderDate,
+                                          OrderNo = orders.OrderNo,
+                                          OrderId =orders.OrderId,
+                                      }).ToList().Select(x=>new Order {
+                                          OrderNo=x.OrderNo,
+                                          OrderDate=x.OrderDate,
+                                          OrderId=x.OrderId,
+                                          OrderTotal=x.OrderTotal,
+                                      }).ToList();
+            return customersOrderList;
         }
-        private void SendStkPushNotifaction() {
-            
-          
+        private void SendStkPushNotifaction()
+        {
+
+
             ShoppingCartApiAccessToken shoppingCartApiAccessToken = GetAuthToken();
-            var result =  "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"                
+            var result = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
                 .WithOAuthBearerToken(shoppingCartApiAccessToken.AccessToken)
                 .PostJsonAsync(this._stkSettings.Value)
                 .ReceiveString().Result;
         }
 
 
-        private ShoppingCartApiAccessToken GetAuthToken() {
+        private ShoppingCartApiAccessToken GetAuthToken()
+        {
 
             var result = _shoppingCartStkPushKey.Value.Url
                 .WithBasicAuth(_shoppingCartStkPushKey.Value.ConsumerKey, _shoppingCartStkPushKey.Value.ConsumerSecret)
                 .GetStringAsync().Result;
-           ShoppingCartApiAccessToken shoppingCartApiAccessToken = JsonConvert.DeserializeObject<ShoppingCartApiAccessToken>(result);
-           Debug.Write(JsonConvert.SerializeObject(this._stkSettings.Value));
-           return shoppingCartApiAccessToken;
+            ShoppingCartApiAccessToken shoppingCartApiAccessToken = JsonConvert.DeserializeObject<ShoppingCartApiAccessToken>(result);
+            Debug.Write(JsonConvert.SerializeObject(this._stkSettings.Value));
+            return shoppingCartApiAccessToken;
         }
     }
 }
