@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Akka.Actor;
 using AspNetCore.Firebase.Authentication.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -56,7 +57,14 @@ namespace ShoppingCartApi
         {
 
             services.AddDbContext<ShoppingCartDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("ShoppingCartDbConnectionString"))
+            options.UseSqlServer(Configuration.GetConnectionString("ShoppingCartDbConnectionString"),
+            sqlServerOptionsAction: sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+            })
             );
             services.Configure<StkSetting>(options => Configuration.GetSection("StkSetting").Bind(options));
             services.AddTransient<IRepository<Order>, OrdersManager>();
@@ -66,6 +74,7 @@ namespace ShoppingCartApi
             services.AddTransient<IRepository<Shopper>, ShoppersManager>();
             services.AddTransient<IRepository<Manufacturer>, ManufacturersManager>();
             services.AddTransient<IRepository<ProductCategory>, ProductCategoryManager>();
+            services.AddSingleton<ActorSystem>(_=> ActorSystem.Create("ShoppingCartService"));
             services.Configure<ShoppingCartStkPushKey>(options => Configuration.GetSection("ShoppingCartStkPushKey").Bind(options));
             services.AddMvc(options =>
             {

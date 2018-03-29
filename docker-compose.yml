@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  shoppingcartapi:
+    image: shoppingcartapi
+    build:
+      context: .
+      dockerfile: Dockerfile

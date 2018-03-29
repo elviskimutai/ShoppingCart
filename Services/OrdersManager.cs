@@ -26,20 +26,12 @@ namespace ShoppingCartApi.Services
             _dbContext = dbContext;
             _stkSettings = stkSettings;
             _shoppingCartStkPushKey = shoppingCartStkPushKey;
-
-
-
-
         }
-
-
-
         public bool Add(Order order)
         {
             try
             {
                 this._dbContext.Orders.Add(order);
-
                 this._dbContext.SaveChanges();
                 return true;
             }
@@ -77,8 +69,34 @@ namespace ShoppingCartApi.Services
 
                 throw;
             }
+        }
 
-
+        internal List<Product> getOrdersItems(Guid id)
+        {
+            var orderItemsByOrderId = (from orderitems in this._dbContext.OrderItems
+                                  join products in this._dbContext.Products
+                                  on orderitems.ProductId equals products.ProductId
+                                  where orderitems.OrderId == id
+                                  select new {
+                                      ProductId= products.ProductId,
+                                      ProductCategory=products.ProductCategory,
+                                      ProductManufacturer=products.ProductManufacturer,
+                                      Price=products.Price,
+                                      ProductMediaFile=products.ProductMediaFile,
+                                      ProductName= products.ProductName,
+                                      ProductSku=products.ProductSku,
+                                      ShopperReview= products.ShopperReview
+                                  }).Select(product=>new Product {
+                                      Price =product.Price,
+                                      ProductId= product.ProductId,
+                                      ProductMediaFile= product.ProductMediaFile,
+                                      ProductCategory= product.ProductCategory,
+                                      ProductName= product.ProductName,
+                                      ProductSku = product.ProductSku,
+                                      ProductManufacturer= product.ProductManufacturer,
+                                      ShopperReview= product.ShopperReview
+                                  }).ToList();
+            return orderItemsByOrderId;
         }
 
         public bool CreateNewOrder(CustomerOrder customerOrder, string customerId)
