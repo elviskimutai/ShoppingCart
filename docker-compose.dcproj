@@ -2,10 +2,10 @@
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.0</ProjectVersion>
-    <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>bbd6a47f-9eb3-455d-a3e0-fe3f962ce702</ProjectGuid>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>988ef99f-f3f8-44a2-a740-ef538abbba4a</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}</DockerServiceUrl>
+    <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>shoppingcartapi</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
@@ -14,5 +14,6 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
+    <None Include="docker-compose.ci.build.yml" />
   </ItemGroup>
 </Project>
